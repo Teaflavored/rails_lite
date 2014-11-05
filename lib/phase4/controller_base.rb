@@ -1,10 +1,10 @@
 require_relative '../phase3/controller_base'
 require_relative './session'
+require_relative './flash'
 
 module Phase4
   class ControllerBase < Phase3::ControllerBase
     def redirect_to(url)
-    	flash.decrease_show_count
     	#a request is made, there should be 1 count left
     	#when second request is made there'll be 0 counts left and flash will clear
     	session.store_session(@res)
@@ -14,7 +14,6 @@ module Phase4
     end
 
     def render_content(content, type)
-    	flash.decrease_show_count
     	session.store_session(@res)
     	flash.store_flash(@res)
 

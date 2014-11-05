@@ -25,19 +25,36 @@ class StatusesController < Phase6::ControllerBase
       s[:cat_id] == Integer(params[:cat_id])
     end
 
+
     render_content(statuses.to_s, "text/text")
   end
 end
 
-class Cats2Controller < Phase6::ControllerBase
+Cat = Struct.new(:name, :id, :owner)
+
+class CatsController < Phase6::ControllerBase
   def index
-    render_content($cats.to_s, "text/text")
+    flash[:errors] = "hihi"
+    render :index
   end
+
+  def new
+    @cat = Cat.new("gizmo1", 1, "ned")
+    render :new
+  end
+
+  def create
+    flash[:errors] = "success"
+    redirect_to :index
+  end
+
 end
 
 router = Phase6::Router.new
 router.draw do
-  get Regexp.new("^/cats$"), Cats2Controller, :index
+  get Regexp.new("^/cats$"), CatsController, :index
+  get Regexp.new("^/cats/new$"), CatsController, :new
+  post Regexp.new("^/cats$"), CatsController, :create
   get Regexp.new("^/cats/(?<cat_id>\\d+)/statuses$"), StatusesController, :index
 end
 

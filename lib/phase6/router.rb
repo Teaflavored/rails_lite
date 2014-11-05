@@ -71,3 +71,17 @@ module Phase6
     end
   end
 end
+
+# module UrlHelper
+#   #each url will need to map to a redirect
+#   define_method "#{controller_class.underscore}_url" do
+#   end
+# end
+
+
+
+
+
+
+
+

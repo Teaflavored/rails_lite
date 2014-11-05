@@ -34,13 +34,13 @@ Cat = Struct.new(:name, :id, :owner)
 
 class CatsController < Phase6::ControllerBase
   def index
-    flash[:errors] = "hihi"
     render :index
   end
 
   def new
+    flash[:errors] = "hihi"
     @cat = Cat.new("gizmo1", 1, "ned")
-    render :new
+    redirect_to("/cats")
   end
 
   def create
@@ -50,11 +50,26 @@ class CatsController < Phase6::ControllerBase
 
 end
 
+#every request is a new instance of the catscontroller
+# in index we first call flash, which will initialize a new flash object, give it some kind of key-val pair to store
+# we need to carry this over to the next request, so we store it in the cookie
+# when it initializes it should be initialized with life of 1
+# after the second request, we need to grab the life from the cookie when initializing, if there is a life in there,
+# we need to clear the flash and update the cookie to reflect that
+# when the content is to be rendered, flash will be called and the value will be taken from the already built flash
+# only on the next request does it grab it from the cookie
+# def render_content(content, type)
+#   session.store_session(@res)
+#   flash.store_flash(@res)
+
+#   super
+# end
+
 router = Phase6::Router.new
 router.draw do
-  get Regexp.new("^/cats$"), CatsController, :index
-  get Regexp.new("^/cats/new$"), CatsController, :new
-  post Regexp.new("^/cats$"), CatsController, :create
+  get Regexp.new("^/cats$"), CatsController, :index #cats_url
+  get Regexp.new("^/cats/new$"), CatsController, :new #new_cat_url
+  post Regexp.new("^/cats$"), CatsController, :create #cats_url
   get Regexp.new("^/cats/(?<cat_id>\\d+)/statuses$"), StatusesController, :index
 end
 

@@ -8,15 +8,14 @@ module Phase4
     	#a request is made, there should be 1 count left
     	#when second request is made there'll be 0 counts left and flash will clear
     	session.store_session(@res)
-    	flash.store_flash(@res)
+        flash.store_flash(@res)
 
     	super
     end
 
     def render_content(content, type)
     	session.store_session(@res)
-    	flash.store_flash(@res)
-
+        flash.store_flash(@res)
     	super
     end
 

@@ -1,12 +1,7 @@
 <form action="/cats" method="POST">
   <label>Name
-    <input type="text" name="cat[name]" value="<%= @cat.name %>">
-  </label>
-
-  <label>Owner
-    <input type="text" name="cat[owner]" value="<%= @cat.owner %>">
+    <input type="text" name="cat[name]">
   </label>
 
   <input type="submit">
 </form>
-<%= flash[:errors] %> 

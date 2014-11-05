@@ -1,4 +1,5 @@
 require_relative '../phase2/controller_base'
+require_relative '../phase4/flash.rb'
 require 'active_support/core_ext'
 require 'erb'
 

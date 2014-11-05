@@ -7,12 +7,13 @@ module Phase4
     #similar to session this needs to persist across requests
 
     def initialize(req)
-      @flash = { "count" => 2 }
+      @flash = { "shown" => false }
+      #by default flash has shown in it
       #each flash should be shown at least once
       req.cookies.each do |cookie|
         @flash = JSON.parse(cookie.value) if cookie.name == "flash_rails_lite_app"
       end
-
+      @flash = {} if @flash["shown"]
     end
 
     def [](key)
@@ -22,13 +23,12 @@ module Phase4
 
     def []=(key, value)
       @flash[key] = value
+      @flash["shown"] = true
     end
 
     def store_flash(res)
-      return if @flash["count"].nil?
-      @flash["count"] -= 1
-      @flash = {} if @flash["count"] == 0
-      res.cookies << WEBrick::Cookie.new("flash_rails_lite_app", @flash.to_json)
+      res.cookies.delete_if { |name| name == "flash_rails_lite_app" }
+      res.cookies << WEBrick::Cookie.new("flash_rails_lite_app", @flash.to_json) unless @flash["shown"] == false
       #stores the flash inside the cookie, but clear the flash if the show count is 0
     end
 

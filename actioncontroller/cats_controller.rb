@@ -33,10 +33,9 @@ class CatsController < ControllerBase
   end
 
   def create
-    @params = params
-    #@cat = Cat.new(params[:cat][:name])
-
-    render :show
+    @cat = Cat.new(params["cat"]["name"])
+    flash[:success] = "Successful create"
+    redirect_to("/cats/#{@cat.name}")
   end
 
   def show

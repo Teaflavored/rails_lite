@@ -31,17 +31,16 @@ class ControllerBase
     @res.status = 302
     @res.header["location"] = url 
     @already_built_response = true
-  end
+  end 
 
   # Populate the response with content.
   # Set the response's content type to the given type.
   # Raise an error if the developer tries to double render.
   def render(template_name)
     session.store_session(@res)
-    flash.store_flash(@res)
     template = File.read("views/#{self.class.to_s.underscore}/#{template_name.to_s}.html.erb")
     erb_template = ERB.new(template)
-
+    flash.store_flash(@res)
     render_content(erb_template.result(binding), type="text/html")
   end
 
@@ -68,6 +67,7 @@ class ControllerBase
       @res.body = content
       @res.content_type = type
       @already_built_response = true
+      req.cookies.length.times { req.cookies.pop }
     end
 end
 

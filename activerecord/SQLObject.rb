@@ -90,6 +90,24 @@ class SQLObject
     self.new(hash)
   end
 
+  def self.find_by(attribute_hash)
+    column = attribute_hash.keys.first 
+    value = attribute_hash.values.first
+    query = <<-SQL
+    SELECT
+      *
+    FROM
+      #{table_name}
+    WHERE
+      #{table_name}.#{column} = ?
+    LIMIT
+      1
+    SQL
+    hash = DBConnection.execute(query, value).first
+    return nil if hash.nil?
+    self.new(hash)
+  end
+
   def attributes
     self.class.attributes
   end
@@ -109,8 +127,6 @@ class SQLObject
     VALUES
       (#{value_names})
     SQL
-
-    byebug
     DBConnection.execute(query, *self.attribute_values)
     self.id = DBConnection.last_insert_row_id
   end
@@ -131,7 +147,6 @@ class SQLObject
   end
 
   def save
-    byebug
     # unless self.class.validate_methods.nil?
     #   @errors = {}
     #   self.class.validate_methods.each do |method|

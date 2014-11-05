@@ -2,6 +2,12 @@ require_relative 'actioncontroller.rb'
 require_relative 'user.rb'
 require 'byebug'
 
+class SessionsController < ControllerBase
+	def new
+		render :new
+	end
+end
+
 class UsersController < ControllerBase
   def index
     @users = User.all
@@ -23,7 +29,7 @@ class UsersController < ControllerBase
   end
 
   def show
-  	@user = User.find(params["user_id"].to_i)
+  	@user = User.find_by(id: params["user_id"].to_i)
    	# @user = User.find(params["user_id"])
    	render :show
   end

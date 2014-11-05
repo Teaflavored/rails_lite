@@ -3,3 +3,6 @@
 	<%= cat.name %>
 <% end %> 
 <a href="/cats/new">New cat!</a>
+<% if flash["success"] %>
+	success: <%= flash["success"] %>
+<% end %>

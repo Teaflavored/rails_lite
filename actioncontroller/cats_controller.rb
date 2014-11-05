@@ -40,6 +40,7 @@ class CatsController < ControllerBase
 
   def show
     @cat = Cat.find_by(params[:name])
+    flash[:success2] = "omg it works here too"
     render :show
   end
 end

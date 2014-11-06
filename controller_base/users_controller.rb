@@ -1,5 +1,6 @@
-require_relative 'actioncontroller.rb'
-require_relative 'user.rb'
+require_relative 'controller_base.rb'
+require_relative '../Model/user.rb'
+require 'webrick'
 require 'byebug'
 
 class SessionsController < ControllerBase
@@ -51,7 +52,6 @@ class UsersController < ControllerBase
   	@user = User.find_by(id: params["user_id"].to_i)
   	if !current_user.nil? && @user.id == current_user.id
    	# @user = User.find(params["user_id"])
-   	  byebug
    		render :show
    	else
    		redirect_to users_url 

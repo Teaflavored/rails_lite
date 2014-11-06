@@ -10,4 +10,6 @@
 		<li><%= user.username %></li>
 	<% end %>
 </ul>
-<a href="/users/new">New User</a>
+<% unless logged_in? %>
+	<a href="/users/new">New User</a>
+<% end %>

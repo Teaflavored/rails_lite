@@ -1,6 +1,4 @@
 require_relative "../activerecord/SQLObject"
-require "byebug"
-
 class User < SQLObject
 	def initialize(params = {} )
 		super(params)

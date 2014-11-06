@@ -1,7 +1,7 @@
 require_relative 'db_connection'
 require_relative 'SQLObject'
 require_relative "searcheable"
-require_relative "associable"
+require_relative "associatable"
 require_relative "validations"
 require 'byebug'
 require 'active_support/inflector'

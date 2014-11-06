@@ -26,6 +26,7 @@ class Route
     end
     controller_class.new(req, res, route_params).invoke_action(self.action_name)
   end
+
 end
 
 class Router
@@ -59,7 +60,7 @@ class Router
     @routes.each do |route|
       return route if route.matches?(req)
     end
-
+    
     nil
   end
 

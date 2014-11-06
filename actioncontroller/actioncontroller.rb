@@ -12,6 +12,42 @@ class ControllerBase
 
   # Setup the controller
 
+  def current_user
+    User.find_by(session_token: session["session_token"])
+  end
+
+  def self.inherited(subclass)
+    class_name = subclass.to_s.gsub("Controller","")
+    #index/create
+    define_method "#{class_name.underscore}_url" do
+      "/#{class_name.underscore}"
+    end
+
+    define_method "#{class_name.downcase.singularize}_url" do |obj|
+      if obj.is_a?(Fixnum)
+        "/#{class_name.underscore}/obj"
+      else
+        "/#{class_name.underscore}/#{obj.id}"
+      end
+    end
+
+    define_method "new_#{class_name.downcase.singularize}_url" do
+      "/#{class_name.underscore}/new"
+    end
+
+    define_method "edit_#{class_name.downcase.singularize}_url" do |obj|
+      if obj.is_a?(Fixnum)
+        "/#{class_name.underscore}/obj/edit"
+      else
+        "/#{class_name.underscore}/#{obj.id}/edit"
+      end
+    end
+  end
+
+  def logged_in?
+    !current_user.nil?
+  end
+
   def initialize(req, res, route_params = {} )
     @params = Params.new(req, route_params)
     @req = req

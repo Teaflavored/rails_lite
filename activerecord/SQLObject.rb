@@ -113,11 +113,16 @@ class SQLObject
   end
 
   def attribute_values
-    attributes.values
+    values = attributes.values
+    if attributes.keys.include?(:id) && attributes.keys.first != :id
+      id = values.pop
+      [id] + values
+    else
+      values
+    end
   end
 
   def insert
-
     col_names = self.attributes.keys.map(&:to_s)
     value_names = Array.new(col_names.count) { '?' }.join(",")
 
@@ -132,8 +137,7 @@ class SQLObject
   end
 
   def update
-
-    set_rows = self.class.columns.map { |column| "#{column} = ?"}.join(",")
+    set_rows = self.class.columns.map { |column| "#{column} = ?" }.join(",")
     query = <<-SQL
       UPDATE
         #{self.class.table_name}
@@ -143,7 +147,7 @@ class SQLObject
         #{self.class.table_name}.id = ?
     SQL
 
-    DBConnection.execute(query, *self.attribute_values, self.id)
+    DBConnection.execute(query, *self.attribute_values, self.id.to_i)
   end
 
   def save

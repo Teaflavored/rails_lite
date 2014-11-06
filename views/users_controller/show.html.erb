@@ -1,2 +1,6 @@
-<pre>hi, <%= @user.username %></pre>
+<% if logged_in? %>
+	<a href="/sessionlogout">Sign Out</a>
+<% end %> 
+
+<pre>hi, <%= current_user.username %></pre>
 <a href="/users">Back to users</a> 
